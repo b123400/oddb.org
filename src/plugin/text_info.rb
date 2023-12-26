@@ -1275,7 +1275,7 @@ module ODDB
         return
       end
       styles = res[1]
-      extract_image(html_name, meta_info.title, meta_info.type, meta_info.lang, meta_info.authNrs)
+      textinfo_pi_name = nil
       if type == :fi
         if is_same_html && !@options[:reparse] && reg && reg.fachinfo && text_info.descriptions.keys.index(meta_info.lang)
           LogFile.debug "parse_textinfo #{__LINE__} #{meta_info.iksnr} at #{nr_uptodate}: #{type} #{html_name} is_same_html #{html_name}"
@@ -1293,8 +1293,10 @@ module ODDB
         end
         textinfo_pi = @parser.parse_patinfo_html(html_name, @format, meta_info.title, styles)
         update_patinfo_lang(meta_info, { meta_info.lang => textinfo_pi } )
+        textinfo_pi_name = textinfo_pi.name
         textinfo_pi = nil
       end
+      extract_image(html_name, textinfo_pi_name.to_s || meta_info.title, meta_info.type, meta_info.lang, meta_info.authNrs)
       LogFile.debug "parse_textinfo #{__LINE__} at #{nr_uptodate}: #{type} textinfo  #{textinfo.to_s.split("\n")[0..2]}" if  self.respond_to?(:textinfo)
       if reg
         reg.odba_store
