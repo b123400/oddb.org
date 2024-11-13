@@ -64,6 +64,7 @@ module ODDB
           @agent.get_file  Start_uri # 'https://www.swissreg.ch/srclient/faces/jsp/start.jsp'
           @session.writeResponse(@agent, "#{LogDir}/session_expired.html")
           @session.checkErrors(@agent.page.body)
+          puts "WHAT? #{@agent.page.links.inspect}"
           @agent.page.links[3].click
           @session.writeResponse(@agent, "#{LogDir}/homepage.html")
           @state = nil         
